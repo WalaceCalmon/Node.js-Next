@@ -1,5 +1,6 @@
+import { conectarMongoDB } from '../../middlewares/conectarMogoDB';
+
 import type { NextApiRequest, NextApiResponse } from "next";
-import {conectarMongoDB} from '../../middlewares/conectarMogoDB';
 import type { RespostaPadraoMsg } from '../../types/RespostaPadraoMsg';
 
 // eslint-disable-next-line import/no-anonymous-default-export
