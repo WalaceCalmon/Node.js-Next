@@ -2,6 +2,7 @@ import { UsuarioModel } from '../../models/UsuarioModel';
 import { CadastroRequisicao } from '../../types/CadastroRequisicao';
 import { RespostaPadraoMsg } from '../../types/RespostaPadraoMsg';
 import { conectarMongoDB } from '../../middlewares/conectarMogoDB';
+import  md5 from 'md5';
 
 import type { NextApiRequest, NextApiResponse} from 'next';
 
@@ -26,7 +27,18 @@ const endpointCadastro =
                 return res.status(400).json({erro : 'Senha inválido'});
             }
 
-            await UsuarioModel.create(usuario);
+            // verificação de usuário com mesmo e-mail
+            const usuarioComMesmoEmail = await UsuarioModel.find({email : usuario.email});
+            if(usuarioComMesmoEmail && usuarioComMesmoEmail.length > 0){
+                return res.status(400).json({erro : 'Já existe uma conta com o e-mail informado'});
+            }
+            
+            const usuarioASerSalvo = {
+                nome : usuario.nome,
+                email : usuario.email,
+                senha : md5(usuario.senha)
+            }
+            await UsuarioModel.create(usuarioASerSalvo);
             return res.status(200).json({msg : 'Usuario cadastrado com sucesso!'});
         }
         return res.status(405).json({erro : 'Metodo não é válido'});
