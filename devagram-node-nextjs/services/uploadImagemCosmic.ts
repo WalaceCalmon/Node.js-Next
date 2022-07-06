@@ -17,8 +17,15 @@ const bucketPublicacoes = Cosmic.bucket({
 const storage = multer.memoryStorage();
 const upload = multer({storage : storage});
 
-const uploadImagemCosmic =async (req:any) => {
+const uploadImagemCosmic =async (req : any) => {
     if(req?.file?.originalname){
+
+        if(!req?.file?.originalname.includes('.png') &&
+            !req?.file?.originalname.includes('.jpg') &&
+            !req?.file?.originalname.includes('.jpeg')){
+                throw new Error('Extenção da imagem inválida');
+        }
+
         const media_object = {
             originalname : req.file.originalname,
             buffer : req.file.buffer
