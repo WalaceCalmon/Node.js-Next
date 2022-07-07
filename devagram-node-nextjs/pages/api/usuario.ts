@@ -1,12 +1,12 @@
+import nc from 'next-connect';
+
 import { conectarMongoDB } from '../../middlewares/conectarMogoDB';
 import { validarTokenJWT } from '../../middlewares/validarTokenJWT';
 import { UsuarioModel } from '../../models/UsuarioModel';
+import { upload, uploadImagemCosmic } from '../../services/uploadImagemCosmic';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { RespostaPadraoMsg } from '../../types/RespostaPadraoMsg';
-import nc from 'next-connect';
-import { upload, uploadImagemCosmic } from '../../services/uploadImagemCosmic'
-import { imageOptimizer } from 'next/dist/server/image-optimizer';
 
 const handler = nc()
     .use(upload.single('file'))
